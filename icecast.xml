@@ -20,7 +20,7 @@
     
     <hostname>0.0.0.0</hostname>
     <listen-socket>
-        <port>8000</port>
+        <port>10000</port>
     </listen-socket>
     
     <paths>
@@ -41,3 +41,4 @@
         <chroot>0</chroot>
     </security>
 </icecast>
+
