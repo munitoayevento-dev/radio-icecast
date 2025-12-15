@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <icecast>
-    <location>Radio Municipal de Toay</location>
-    <admin>radiomunicipal@toay.gob.ar</admin>
+    <location>Radio Online</location>
+    <admin>admin@turadio.com</admin>
     
     <limits>
         <clients>20</clients>
@@ -18,18 +18,26 @@
         <admin-password>3e0457a323fe43e917606a9d7096cfe6</admin-password>
     </authentication>
     
-    <hostname>localhost</hostname>
+    <hostname>0.0.0.0</hostname>
     <listen-socket>
         <port>8000</port>
     </listen-socket>
     
     <paths>
-        <logdir>/var/log/icecast2</logdir>
-        <webroot>/usr/share/icecast2/web</webroot>
-        <adminroot>/usr/share/icecast2/web</adminroot>
+        <!-- En Alpine las rutas son diferentes -->
+        <logdir>/var/log/icecast</logdir>
+        <webroot>/usr/share/icecast/web</webroot>
+        <adminroot>/usr/share/icecast/web</adminroot>
         <alias source="/" destination="/status.xsl"/>
     </paths>
-
+    
+    <logging>
+        <accesslog>access.log</accesslog>
+        <errorlog>error.log</errorlog>
+        <loglevel>2</loglevel>
+    </logging>
+    
+    <security>
+        <chroot>0</chroot>
+    </security>
 </icecast>
-
-
