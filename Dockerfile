@@ -8,17 +8,11 @@ RUN apt-get update && apt-get install -y \
     icecast2 \
     && rm -rf /var/lib/apt/lists/*
 
-# Crear usuario y grupo icecast si no existen
-RUN groupadd -r icecast2 && useradd -r -g icecast2 icecast2
-
-# Crear directorios de log con permisos correctos
+# El paquete icecast2 YA crea usuario/grupo icecast2
+# Solo asegurar directorios de log
 RUN mkdir -p /var/log/icecast2 && \
     chown -R icecast2:icecast2 /var/log/icecast2 && \
     chmod 755 /var/log/icecast2
-
-# También crear otros directorios necesarios
-RUN mkdir -p /var/run/icecast2 && \
-    chown -R icecast2:icecast2 /var/run/icecast2
 
 # Copiar configuración
 COPY icecast.xml /etc/icecast2/icecast.xml
@@ -27,7 +21,7 @@ COPY icecast.xml /etc/icecast2/icecast.xml
 RUN chown icecast2:icecast2 /etc/icecast2/icecast.xml && \
     chmod 644 /etc/icecast2/icecast.xml
 
-# Usar el usuario icecast2
+# Usar el usuario icecast2 (ya existe)
 USER icecast2
 
 EXPOSE 8000
