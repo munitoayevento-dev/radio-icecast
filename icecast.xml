@@ -18,7 +18,7 @@
         <admin-password>${ADMIN_PASS}</admin-password>
     </authentication>
     
-    <hostname>0.0.0.0</hostname>
+    <hostname>localhost</hostname>
     <listen-socket>
         <port>8000</port>
     </listen-socket>
@@ -29,4 +29,5 @@
         <adminroot>/usr/share/icecast2/web</adminroot>
         <alias source="/" destination="/status.xsl"/>
     </paths>
+
 </icecast>
