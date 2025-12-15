@@ -1,27 +1,22 @@
 FROM ubuntu:22.04
 
-# Evitar preguntas interactivas
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Instalar Icecast
+# 1. PRIMERO instalar icecast2 (crea usuario/grupo automáticamente)
 RUN apt-get update && apt-get install -y \
     icecast2 \
     && rm -rf /var/lib/apt/lists/*
 
-# El paquete icecast2 YA crea usuario/grupo icecast2
-# Solo asegurar directorios de log
+# 2. LUEGO configurar directorios (ahora icecast2:icecast2 existe)
 RUN mkdir -p /var/log/icecast2 && \
     chown -R icecast2:icecast2 /var/log/icecast2 && \
     chmod 755 /var/log/icecast2
 
-# Copiar configuración
+# 3. Copiar configuración
 COPY icecast.xml /etc/icecast2/icecast.xml
+RUN chown icecast2:icecast2 /etc/icecast2/icecast.xml
 
-# Dar permisos a la configuración
-RUN chown icecast2:icecast2 /etc/icecast2/icecast.xml && \
-    chmod 644 /etc/icecast2/icecast.xml
-
-# Usar el usuario icecast2 (ya existe)
+# 4. Usar usuario icecast2
 USER icecast2
 
 EXPOSE 8000
