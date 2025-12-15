@@ -1,24 +1,23 @@
-FROM ubuntu:22.04
+FROM alpine:latest
 
-ENV DEBIAN_FRONTEND=noninteractive
+# Instalar icecast (en Alpine se llama 'icecast', no 'icecast2')
+RUN apk add --no-cache icecast
 
-# 1. PRIMERO instalar icecast2 (crea usuario/grupo automáticamente)
-RUN apt-get update && apt-get install -y \
-    icecast2 \
-    && rm -rf /var/lib/apt/lists/*
+# Crear usuario y grupo icecast
+RUN addgroup -S icecast && adduser -S icecast -G icecast
 
-# 2. LUEGO configurar directorios (ahora icecast2:icecast2 existe)
-RUN mkdir -p /var/log/icecast2 && \
-    chown -R icecast2:icecast2 /var/log/icecast2 && \
-    chmod 755 /var/log/icecast2
+# Crear directorios necesarios
+RUN mkdir -p /var/log/icecast /var/run/icecast && \
+    chown -R icecast:icecast /var/log/icecast /var/run/icecast
 
-# 3. Copiar configuración
-COPY icecast.xml /etc/icecast2/icecast.xml
-RUN chown icecast2:icecast2 /etc/icecast2/icecast.xml
+# Copiar configuración adaptada para Alpine
+COPY icecast.xml /etc/icecast.xml
 
-# 4. Usar usuario icecast2
-USER icecast2
+# Dar permisos
+RUN chown icecast:icecast /etc/icecast.xml
+
+USER icecast
 
 EXPOSE 8000
 
-CMD ["icecast2", "-c", "/etc/icecast2/icecast.xml"]
+CMD ["icecast", "-c", "/etc/icecast.xml"]
