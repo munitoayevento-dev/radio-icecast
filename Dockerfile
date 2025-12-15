@@ -1,23 +1,15 @@
 FROM alpine:latest
 
-# Instalar icecast (en Alpine se llama 'icecast', no 'icecast2')
+# Instalar icecast
 RUN apk add --no-cache icecast
 
-# Crear usuario y grupo icecast
-RUN addgroup -S icecast && adduser -S icecast -G icecast
+# Crear directorios básicos
+RUN mkdir -p /var/log/icecast
 
-# Crear directorios necesarios
-RUN mkdir -p /var/log/icecast /var/run/icecast && \
-    chown -R icecast:icecast /var/log/icecast /var/run/icecast
-
-# Copiar configuración adaptada para Alpine
+# Copiar configuración
 COPY icecast.xml /etc/icecast.xml
-
-# Dar permisos
-RUN chown icecast:icecast /etc/icecast.xml
-
-USER icecast
 
 EXPOSE 8000
 
+# Ejecutar como root (sí, se puede en contenedor)
 CMD ["icecast", "-c", "/etc/icecast.xml"]
