@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: mi-radio-online
+    runtime: docker
+    plan: free
+    envVars:
+      - key: SOURCE_PASS
+        generateValue: true
+      - key: RELAY_PASS
+        generateValue: true
+      - key: ADMIN_PASS
+        generateValue: true
