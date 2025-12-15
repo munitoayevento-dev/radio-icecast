@@ -21,6 +21,7 @@
     <hostname>0.0.0.0</hostname>
     <listen-socket>
         <port>10000</port>
+        <bind-address>0.0.0.0</bind-address>
     </listen-socket>
     
     <paths>
@@ -41,4 +42,5 @@
         <chroot>0</chroot>
     </security>
 </icecast>
+
 
