@@ -12,10 +12,10 @@
     </limits>
     
     <authentication>
-        <source-password>${SOURCE_PASS}</source-password>
-        <relay-password>${RELAY_PASS}</relay-password>
+        <source-password>6fd9e8ea9ec3a18abadb6af33c6d7845</source-password>
+        <relay-password>b6e5a092c78e5aabcae387bbf95f915a</relay-password>
         <admin-user>admin</admin-user>
-        <admin-password>${ADMIN_PASS}</admin-password>
+        <admin-password>3e0457a323fe43e917606a9d7096cfe6</admin-password>
     </authentication>
     
     <hostname>localhost</hostname>
@@ -31,3 +31,4 @@
     </paths>
 
 </icecast>
+
