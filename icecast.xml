@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <icecast>
-    <location>Radio Online</location>
-    <admin>admin@turadio.com</admin>
+    <location>Radio Municipal de Toay</location>
+    <admin>radiomunicipal@toay.gob.ar</admin>
     
     <limits>
         <clients>20</clients>
@@ -31,4 +31,5 @@
     </paths>
 
 </icecast>
+
 
