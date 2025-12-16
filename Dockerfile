@@ -22,7 +22,8 @@ COPY start_simple.sh /start_simple.sh
 RUN chown radio:radio /etc/icecast.xml && \
     chmod +x /start_simple.sh /proxy.py
 
-EXPOSE 8080  # Proxy escucha aquí
+EXPOSE 8080
 
 # Comando principal
 CMD ["/start_simple.sh"]
+
