@@ -7,9 +7,17 @@
         <clients>20</clients>
         <sources>2</sources>
         <queue-size>524288</queue-size>
-        <client-timeout>30</client-timeout>
+        <client-timeout>180</client-timeout>
         <source-timeout>10</source-timeout>
+        <header-timeout>60</header-timeout>
+        <burst-on-connect>1</burst-on-connect>
+        <burst-size>65535</burst-size>
     </limits>
+
+    <http-headers>
+        <header name="X-Forwarded-For" value="trust" />
+        <header name="Connection" value="keep-alive" />
+    </http-headers>
     
     <authentication>
         <source-password>6fd9e8ea9ec3a18abadb6af33c6d7845</source-password>
@@ -42,6 +50,7 @@
         <chroot>0</chroot>
     </security>
 </icecast>
+
 
 
 
