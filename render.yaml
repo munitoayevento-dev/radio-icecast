@@ -3,15 +3,6 @@ services:
     name: radio-icecast
     runtime: docker
     plan: free
-    # El proxy corre en 8080, Render redirige 443→8080
     envVars:
       - key: PORT
         value: 8080
-      - key: SOURCE_PASS
-        value: 6fd9e8ea9ec3a18abadb6af33c6d7845
-      - key: RELAY_PASS
-        value: b6e5a092c78e5aabcae387bbf95f915a
-      - key: ADMIN_PASS
-        value: 3e0457a323fe43e917606a9d7096cfe6
-    # Health check simple
-    healthCheckPath: /health
