@@ -35,11 +35,18 @@ def handle_butt():
             data=request.get_data(),
             headers={
                 'Authorization': request.headers.get('Authorization', ''),
-                'Content-Type': request.headers.get('Content-Type', 'audio/mpeg')
+                'Content-Type': request.headers.get('Content-Type', 'audio/mpeg'),
+                'Connection': 'keep-alive',
+                'Keep-Alive': 'timeout=300, max=1000'
             },
-            stream=True
+            stream=True,
+            timeout=300
         )
-        return Response(resp.iter_content(chunk_size=8192), status=resp.status_code)
+         response = Response(resp.iter_content(chunk_size=8192), status=resp.status_code)
+        response.headers['Connection'] = 'keep-alive'
+        response.headers['Keep-Alive'] = 'timeout=300'
+        return response
+        
     except Exception as e:
         return f"Error: {str(e)}", 500
 
