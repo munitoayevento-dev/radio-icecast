@@ -16,10 +16,6 @@ COPY icecast.xml /etc/icecast.xml
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY start.sh /start.sh
 
-# 5. Script de verificación (opcional, para debug)
-COPY check_ports.py /check_ports.py
-RUN chmod +x /check_ports.py /start.sh
-
 # 6. Permisos de archivos
 RUN chown radio:radio /etc/icecast.xml
 
@@ -31,3 +27,4 @@ USER root
 
 # 9. Comando de inicio
 CMD ["/start.sh"]
+
