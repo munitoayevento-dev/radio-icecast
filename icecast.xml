@@ -1,57 +1,20 @@
-<?xml version="1.0"?>
-<icecast>
-    <location>Radio Online</location>
-    <admin>admin@turadio.com</admin>
-    
-    <limits>
-        <clients>20</clients>
-        <sources>2</sources>
-        <queue-size>524288</queue-size>
-        <client-timeout>180</client-timeout>
-        <source-timeout>10</source-timeout>
-        <header-timeout>60</header-timeout>
-        <burst-on-connect>1</burst-on-connect>
-        <burst-size>65535</burst-size>
-    </limits>
+<!-- Solo escuchar localmente, nginx maneja lo público -->
+<listen-socket>
+    <port>10000</port>
+    <bind-address>127.0.0.1</bind-address>  <!-- SOLO LOCALHOST -->
+</listen-socket>
 
-    <http-headers>
-        <header name="X-Forwarded-For" value="trust" />
-        <header name="Connection" value="keep-alive" />
-    </http-headers>
-    
-    <authentication>
-        <source-password>6fd9e8ea9ec3a18abadb6af33c6d7845</source-password>
-        <relay-password>b6e5a092c78e5aabcae387bbf95f915a</relay-password>
-        <admin-user>admin</admin-user>
-        <admin-password>3e0457a323fe43e917606a9d7096cfe6</admin-password>
-    </authentication>
-    
-    <hostname>0.0.0.0</hostname>
-    <listen-socket>
-        <port>10000</port>
-        <bind-address>0.0.0.0</bind-address>
-    </listen-socket>
-    
-    <paths>
-        <!-- En Alpine las rutas son diferentes -->
-        <logdir>/var/log/icecast</logdir>
-        <webroot>/usr/share/icecast/web</webroot>
-        <adminroot>/usr/share/icecast/web</adminroot>
-        <alias source="/" destination="/status.xsl"/>
-    </paths>
-    
-    <logging>
-        <accesslog>access.log</accesslog>
-        <errorlog>error.log</errorlog>
-        <loglevel>2</loglevel>
-    </logging>
-    
-    <security>
-        <chroot>0</chroot>
-    </security>
-</icecast>
+<!-- Headers para proxy -->
+<http-headers>
+    <header name="X-Forwarded-For" value="trust" />
+    <header name="Access-Control-Allow-Origin" value="*" />
+</http-headers>
 
-
-
-
-
+<!-- Aumentar timeouts -->
+<limits>
+    <clients>20</clients>
+    <sources>2</sources>
+    <client-timeout>300</client-timeout>    <!-- 5 minutos -->
+    <source-timeout>300</source-timeout>    <!-- 5 minutos -->
+    <header-timeout>120</header-timeout>    <!-- 2 minutos -->
+</limits>
