@@ -8,6 +8,9 @@
         <sources>2</sources>
         <client-timeout>300</client-timeout>
         <source-timeout>300</source-timeout>
+        <header-timeout>120</header-timeout>
+        <burst-on-connect>1</burst-on-connect>
+        <burst-size>65535</burst-size>
     </limits>
     
     <authentication>
@@ -45,4 +48,5 @@
             </changeowner>
     </security>
 </icecast>
+
 
