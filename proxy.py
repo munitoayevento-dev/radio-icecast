@@ -1,64 +1,50 @@
 #!/usr/bin/env python3
-"""
-Proxy mínimo que traduce SOURCE→PUT para Render
-Butt se conecta aquí, y este proxy reenvía a Icecast interno.
-"""
-from flask import Flask, request, Response, make_response
-import requests
-import logging
+import subprocess
+import time
 import os
+from flask import Flask, request, Response
+import requests
 
 app = Flask(__name__)
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
-# Configuración
-ICECAST_INTERNAL = "http://127.0.0.1:10000"
-MOUNT_POINT = "/stream"  # El mountpoint real de Icecast
+# 1. Iniciar Icecast al comenzar
+print("Iniciando Icecast...")
+icecast_process = subprocess.Popen(["icecast", "-c", "/etc/icecast.xml"])
+time.sleep(3)  # Esperar que Icecast inicie
 
-@app.route('/butt', methods=['PUT', 'POST', 'SOURCE'])
+# 2. Proxy simple
+@app.route('/butt', methods=['PUT', 'SOURCE'])
 def handle_butt():
-    """Maneja conexiones de Butt"""
     try:
-        # 1. Obtener datos de la petición de Butt
-        auth_header = request.headers.get('Authorization', '')
-        content_type = request.headers.get('Content-Type', 'audio/mpeg')
-        
-        # 2. URL destino (Icecast interno)
-        icecast_url = f"{ICECAST_INTERNAL}{MOUNT_POINT}"
-        
-        # 3. Reenviar a Icecast (siempre como PUT)
-        logger.info(f"Reenviando audio a Icecast interno: {icecast_url}")
-        
+        # Reenviar a Icecast local
+        icecast_url = "http://127.0.0.1:10000/stream"
         resp = requests.request(
-            method='PUT',  # SIEMPRE usamos PUT para Icecast
+            method='PUT',
             url=icecast_url,
             data=request.get_data(),
             headers={
-                'Authorization': auth_header,
-                'Content-Type': content_type,
-                'User-Agent': 'Butt-Proxy/1.0'
+                'Authorization': request.headers.get('Authorization', ''),
+                'Content-Type': request.headers.get('Content-Type', 'audio/mpeg')
             },
-            stream=True,
-            timeout=30
+            stream=True
         )
-        
-        # 4. Devolver respuesta a Butt
-        return Response(
-            resp.iter_content(chunk_size=8192),
-            status=resp.status_code,
-            headers=dict(resp.headers)
-        )
-        
+        return Response(resp.iter_content(chunk_size=8192), status=resp.status_code)
     except Exception as e:
-        logger.error(f"Error en proxy: {str(e)}")
-        return make_response(f"Proxy Error: {str(e)}", 500)
+        return f"Error: {str(e)}", 500
 
+# 3. Health check para Render
 @app.route('/health')
-def health_check():
-    """Health check para Render"""
+def health():
     return "OK", 200
 
+# 4. Ruta para oyentes (pasa directo)
+@app.route('/<path:path>')
+def catch_all(path):
+    response = requests.get(f"http://127.0.0.1:10000/{path}")
+    return Response(response.content, status=response.status_code, headers=dict(response.headers))
+
 if __name__ == '__main__':
-    # Escuchar en todas las interfaces, puerto 8080
-    app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)
+    print("Proxy iniciado en puerto 8080")
+    print("Butt debe usar: /butt")
+    print("Oyentes: /stream")
+    app.run(host='0.0.0.0', port=8080)
