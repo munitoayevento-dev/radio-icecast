@@ -19,7 +19,8 @@ RUN chown radio:radio /etc/icecast.xml
 # 6. Usar el usuario radio
 USER radio
 
-EXPOSE 10000
+EXPOSE 443
 
 CMD ["icecast", "-c", "/etc/icecast.xml"]
+
 
