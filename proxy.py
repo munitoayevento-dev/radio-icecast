@@ -42,7 +42,8 @@ def handle_butt():
             stream=True,
             timeout=300
         )
-         response = Response(resp.iter_content(chunk_size=8192), status=resp.status_code)
+        
+        response = Response(resp.iter_content(chunk_size=8192), status=resp.status_code)
         response.headers['Connection'] = 'keep-alive'
         response.headers['Keep-Alive'] = 'timeout=300'
         return response
