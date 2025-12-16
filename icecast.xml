@@ -17,7 +17,6 @@
         <admin-password>3e0457a323fe43e917606a9d7096cfe6</admin-password>
     </authentication>
     
-    <!-- IMPORTANTE: Icecast solo local, el proxy maneja lo externo -->
     <hostname>127.0.0.1</hostname>
     <listen-socket>
         <port>10000</port>
@@ -27,16 +26,12 @@
     <paths>
         <logdir>/var/log/icecast</logdir>
         <webroot>/usr/share/icecast/web</webroot>
-        <alias source="/" destination="/status.xsl"/>
+        <adminroot>/usr/share/icecast/web</adminroot>
     </paths>
     
     <logging>
         <accesslog>access.log</accesslog>
         <errorlog>error.log</errorlog>
-        <loglevel>3</loglevel>
+        <loglevel>2</loglevel>
     </logging>
-    
-    <http-headers>
-        <header name="X-Forwarded-For" value="trust" />
-    </http-headers>
 </icecast>
