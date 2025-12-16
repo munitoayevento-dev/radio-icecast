@@ -17,6 +17,7 @@
         <admin-password>3e0457a323fe43e917606a9d7096cfe6</admin-password>
     </authentication>
     
+    <!-- ESCUCHAR LOCAL, puerto 10000 -->
     <hostname>127.0.0.1</hostname>
     <listen-socket>
         <port>10000</port>
@@ -27,11 +28,12 @@
         <logdir>/var/log/icecast</logdir>
         <webroot>/usr/share/icecast/web</webroot>
         <adminroot>/usr/share/icecast/web</adminroot>
+        <alias source="/" destination="/status.xsl"/>
     </paths>
     
     <logging>
         <accesslog>access.log</accesslog>
         <errorlog>error.log</errorlog>
-        <loglevel>2</loglevel>
+        <loglevel>4</loglevel>  <!-- Más verboso -->
     </logging>
 </icecast>
