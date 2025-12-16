@@ -1,30 +1,28 @@
 FROM alpine:latest
 
-# 1. Instalar icecast + nginx (sin prompts)
-RUN apk add --no-cache icecast nginx python3
+# Instalar Icecast + Python mínimo
+RUN apk add --no-cache icecast python3 py3-pip
 
-# 2. Crear usuario para icecast
+# Crear usuario para icecast
 RUN adduser -D -H -s /bin/false radio
 
-# 3. Directorios y permisos
-RUN mkdir -p /var/log/icecast /var/log/nginx /var/run/nginx && \
-    chown -R radio:radio /var/log/icecast && \
-    chown -R nginx:nginx /var/log/nginx /var/run/nginx
+# Directorios y permisos
+RUN mkdir -p /var/log/icecast && \
+    chown -R radio:radio /var/log/icecast
 
-# 4. Copiar configuraciones
+# Instalar Flask para el proxy
+RUN pip3 install flask
+
+# Copiar archivos
 COPY icecast.xml /etc/icecast.xml
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY start.sh /start.sh
+COPY proxy.py /proxy.py
+COPY start_simple.sh /start_simple.sh
 
-# 6. Permisos de archivos
-RUN chown radio:radio /etc/icecast.xml
+# Permisos
+RUN chown radio:radio /etc/icecast.xml && \
+    chmod +x /start_simple.sh /proxy.py
 
-# 7. Exponer puertos (8080 para nginx, 10000 interno icecast)
-EXPOSE 8080
+EXPOSE 8080  # Proxy escucha aquí
 
-# 8. Usar usuario no-root (nginx corre como nginx, icecast como radio)
-USER root
-
-# 9. Comando de inicio
-CMD ["/start.sh"]
-
+# Comando principal
+CMD ["/start_simple.sh"]
