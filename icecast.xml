@@ -1,20 +1,42 @@
-<!-- Solo escuchar localmente, nginx maneja lo público -->
-<listen-socket>
-    <port>10000</port>
-    <bind-address>127.0.0.1</bind-address>  <!-- SOLO LOCALHOST -->
-</listen-socket>
-
-<!-- Headers para proxy -->
-<http-headers>
-    <header name="X-Forwarded-For" value="trust" />
-    <header name="Access-Control-Allow-Origin" value="*" />
-</http-headers>
-
-<!-- Aumentar timeouts -->
-<limits>
-    <clients>20</clients>
-    <sources>2</sources>
-    <client-timeout>300</client-timeout>    <!-- 5 minutos -->
-    <source-timeout>300</source-timeout>    <!-- 5 minutos -->
-    <header-timeout>120</header-timeout>    <!-- 2 minutos -->
-</limits>
+<?xml version="1.0"?>
+<icecast>
+    <location>Radio Online</location>
+    <admin>admin@turadio.com</admin>
+    
+    <limits>
+        <clients>20</clients>
+        <sources>2</sources>
+        <client-timeout>300</client-timeout>
+        <source-timeout>300</source-timeout>
+    </limits>
+    
+    <authentication>
+        <source-password>6fd9e8ea9ec3a18abadb6af33c6d7845</source-password>
+        <relay-password>b6e5a092c78e5aabcae387bbf95f915a</relay-password>
+        <admin-user>admin</admin-user>
+        <admin-password>3e0457a323fe43e917606a9d7096cfe6</admin-password>
+    </authentication>
+    
+    <!-- IMPORTANTE: Icecast solo local, el proxy maneja lo externo -->
+    <hostname>127.0.0.1</hostname>
+    <listen-socket>
+        <port>10000</port>
+        <bind-address>127.0.0.1</bind-address>
+    </listen-socket>
+    
+    <paths>
+        <logdir>/var/log/icecast</logdir>
+        <webroot>/usr/share/icecast/web</webroot>
+        <alias source="/" destination="/status.xsl"/>
+    </paths>
+    
+    <logging>
+        <accesslog>access.log</accesslog>
+        <errorlog>error.log</errorlog>
+        <loglevel>3</loglevel>
+    </logging>
+    
+    <http-headers>
+        <header name="X-Forwarded-For" value="trust" />
+    </http-headers>
+</icecast>
